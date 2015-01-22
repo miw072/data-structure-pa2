@@ -2,6 +2,7 @@
 #define RST_HPP
 #include "BST.hpp"
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -19,7 +20,34 @@ public:
   virtual bool insert(const Data& item) {
     
     // TODO: Implement this function!
+    BSTNode<Data>** current = &root;             //The pointer to the current node,use this to keep track of the position where to insert, and assign the new node to it
+    BSTNode<Data>* prev = NULL;                  //The cuurent node's previous node, a.k.a the parent node
+
+    /*Find the place to insert the new node, return false when the node was already in the BST*/
+    while ((*current) != NULL){
+      prev = *current;
+      if ((*current)->data == item){
+        return false;
+      }else if (item < (*current)->data ){
+        current = &(*current)->left;
+      }else{
+        current = &(*current)->right;
+      }
+    }
     
+    (*current) = new BSTNode<Data>(item);        //Create a new node with item in its data, insert into the BST
+    (*current)->parent = prev;                   //Assign the prev node to the new node's parent
+    (*current)->priority = rand();               //set random priority to the new node
+    
+    this->isize++;
+    
+    while((*current)->parent != NULL && (*current)->priority > (*current)->parent->priority){
+        if ((*current)->parent->left == (*current)){
+          rotateRight((*current)->parent, (*current));
+        }else{
+          rotateLeft((*current)->parent, (*current));
+        }
+    }
     return true;
   }
 
@@ -42,6 +70,34 @@ private:
   void rotateRight( BSTNode<Data>* par, BSTNode<Data>* child ) {
     
     // TODO: Implement this function!
+    if (par == this->root){
+      child->parent = NULL;
+      this->root = child; 
+      
+      par->left = child->right;
+      if (child->right != NULL){
+        child->right->parent = par;
+      }
+      
+      par->parent = child;
+      child->right = par; 
+    }
+    else{
+      if (par->parent->left == par){
+        par->parent->left = child;
+      }else{
+        par->parent->right = child;
+      }
+      child->parent = par->parent;
+
+      par->left = child->right;
+      if (child->right != NULL){
+        child->right->parent = par;
+      }
+      
+      par->parent = child;
+      child->right = par;
+    }
     
   }
 
@@ -64,7 +120,34 @@ private:
   {
     
     // TODO: Implement this function!
-    
+    if (par == this->root){
+      child->parent = NULL;
+      this->root = child; 
+      
+      par->right = child->left;
+      if (child->left != NULL){
+        child->left->parent = par;
+      }
+      
+      par->parent = child;
+      child->left = par; 
+    }
+    else{
+      if (par->parent->left == par){
+        par->parent->left = child;
+      }else{
+        par->parent->right = child;
+      }
+      child->parent = par->parent;
+
+      par->right = child->left;
+      if (child->right != NULL){
+        child->left->parent = par;
+      }
+      
+      par->parent = child;
+      child->left = par;
+    }
   }
 
 public:
