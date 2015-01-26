@@ -76,18 +76,19 @@ public:
    *  Data items. (should not use >, <=, >=)
    */ // TODO
   iterator find(const Data& item) const {
-    BSTNode<Data>* current = root;
-    
-    /*Traverse the BST to find the item*/
-    while(current != NULL && current->data != item){
-      if (item < current->data ){
-        current = current->left;
-      }else{
-        current = current->right;
+   BSTNode<Data>* current = root;
+    while ( current != 0 ) {
+      if ( item < current->data ) {
+	      current = current->left;
+      }
+      else if ( current->data < item ) {
+	      current = current->right;
+      }
+      else {  // already in the tree
+	      return iterator(current);
       }
     }
-    
-    return typename BST<Data>::iterator(current);  //Return an iterator pointing to the item
+    return end();
   }
 
   

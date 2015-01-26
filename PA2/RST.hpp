@@ -20,8 +20,8 @@ public:
   virtual bool insert(const Data& item) {
     
     // TODO: Implement this function!
-    BSTNode<Data>** current = &root;             //The pointer to the current node,use this to keep track of the position where to insert, and assign the new node to it
-    BSTNode<Data>* prev = NULL;                  //The cuurent node's previous node, a.k.a the parent node
+    BSTNode<Data>** current = &this->root;       //The pointer to the current node,use this to keep track of the position where to insert, and assign the new node to it
+    BSTNode<Data>* prev = NULL;                  //The current node's previous node, a.k.a the parent node
 
     /*Find the place to insert the new node, return false when the node was already in the BST*/
     while ((*current) != NULL){
@@ -38,14 +38,15 @@ public:
     (*current) = new BSTNode<Data>(item);        //Create a new node with item in its data, insert into the BST
     (*current)->parent = prev;                   //Assign the prev node to the new node's parent
     (*current)->priority = rand();               //set random priority to the new node
+    BSTNode<Data> *curr = *current;
     
     this->isize++;
     
-    while((*current)->parent != NULL && (*current)->priority > (*current)->parent->priority){
-        if ((*current)->parent->left == (*current)){
-          rotateRight((*current)->parent, (*current));
+    while(curr->parent != NULL && curr->priority > curr->parent->priority){
+        if (curr->parent->left == curr){
+          rotateRight(curr->parent, curr);
         }else{
-          rotateLeft((*current)->parent, (*current));
+          rotateLeft(curr->parent, curr);
         }
     }
     return true;
@@ -141,7 +142,7 @@ private:
       child->parent = par->parent;
 
       par->right = child->left;
-      if (child->right != NULL){
+      if (child->left != NULL){
         child->left->parent = par;
       }
       
