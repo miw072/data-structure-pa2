@@ -3,7 +3,8 @@
 #include "BST.hpp"
 #include <iostream>
 #include <stdlib.h>
-
+//Name: Mingxuan Wang
+//PID:A53077257
 using namespace std;
 
 template <typename Data>
@@ -73,15 +74,7 @@ private:
     // TODO: Implement this function!
     if (par == this->root){
       child->parent = NULL;
-      this->root = child; 
-      
-      par->left = child->right;
-      if (child->right != NULL){
-        child->right->parent = par;
-      }
-      
-      par->parent = child;
-      child->right = par; 
+      this->root = child;  
     }
     else{
       if (par->parent->left == par){
@@ -90,16 +83,14 @@ private:
         par->parent->right = child;
       }
       child->parent = par->parent;
-
-      par->left = child->right;
+    }
+    par->left = child->right;
       if (child->right != NULL){
         child->right->parent = par;
       }
       
       par->parent = child;
       child->right = par;
-    }
-    
   }
 
   
@@ -123,15 +114,7 @@ private:
     // TODO: Implement this function!
     if (par == this->root){
       child->parent = NULL;
-      this->root = child; 
-      
-      par->right = child->left;
-      if (child->left != NULL){
-        child->left->parent = par;
-      }
-      
-      par->parent = child;
-      child->left = par; 
+      this->root = child;  
     }
     else{
       if (par->parent->left == par){
@@ -140,15 +123,14 @@ private:
         par->parent->right = child;
       }
       child->parent = par->parent;
-
-      par->right = child->left;
+    }
+    par->right = child->left;
       if (child->left != NULL){
         child->left->parent = par;
       }
       
       par->parent = child;
       child->left = par;
-    }
   }
 
 public:
